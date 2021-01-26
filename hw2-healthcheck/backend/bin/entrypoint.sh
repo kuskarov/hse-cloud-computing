@@ -16,6 +16,8 @@ if [ "$FLASK_ENV" = "development" ]; then
   echo "Tables created"
 fi
 
+echo "Registering this backend in database..."
 python manage.py register
+echo "Registered"
 
 exec "$@"
