@@ -12,14 +12,14 @@ services:
       - postgresql
 
   backend2:
-      build: ./backend
-      command: gunicorn --bind 0.0.0.0:5000 manage:app
-      expose:
-        - 5000
-      env_file:
-        - ./.env.prod
-      depends_on:
-        - postgresql
+    build: ./backend
+    command: gunicorn --bind 0.0.0.0:5000 manage:app
+    expose:
+      - 5000
+    env_file:
+      - ./.env.prod
+    depends_on:
+      - postgresql
 
   postgresql:
     image: postgres:12-alpine
