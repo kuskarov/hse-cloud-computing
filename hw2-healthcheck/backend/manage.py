@@ -1,6 +1,6 @@
 from flask.cli import FlaskGroup
-from datetime import datetime
-from project import app, db, ServiceStatus, get_ip
+from project import app, db
+from project.heartbeat import update_db
 
 cli = FlaskGroup(app)
 
@@ -14,13 +14,7 @@ def create_db():
 
 @cli.command("register")
 def register():
-    ip = get_ip()
-    entry = ServiceStatus.query.get(ip)
-    if entry is None:
-        db.session.add(ServiceStatus())
-    else:
-        entry.last_seen_ts = datetime.utcnow()
-    db.session.commit()
+    update_db(db)
 
 
 if __name__ == "__main__":
