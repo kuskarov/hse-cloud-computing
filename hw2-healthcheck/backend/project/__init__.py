@@ -1,5 +1,4 @@
 from flask import Flask
-# from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 import socket
 import enum
@@ -9,9 +8,9 @@ app.config.from_object("project.config.Config")
 
 db = SQLAlchemy(app)
 
-# migrate = Migrate(app, db)
 
-local_ip = socket.gethostbyname(socket.gethostname())
+def get_ip():
+    return socket.gethostbyname(socket.gethostname())
 
 
 class ServiceStatusEnum(enum.Enum):
@@ -30,18 +29,6 @@ class ServiceStatus(db.Model):
         self.status = status
 
 
-def register(ip):
-    if ServiceStatus.query.get(ip) is None:
-        db.session.add(ServiceStatus(ip=ip, status=ServiceStatusEnum.AVAILABLE))
-        db.session.commit()
-        print("Committed!")
-    else:
-        print("Already exists.")
-
-
-#register(local_ip)
-
-
 @app.route('/healthcheck')
 def healthcheck():
     try:
@@ -52,7 +39,7 @@ def healthcheck():
                 "status": "AVAILABLE"
             } for s in statuses]
 
-        return {"ip": local_ip, "services": results}
+        return {"ip": get_ip(), "services": results}
     except:
         return {"error": "Database is unavailable"}
 

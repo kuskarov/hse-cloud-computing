@@ -16,4 +16,6 @@ if [ "$FLASK_ENV" = "development" ]; then
   echo "Tables created"
 fi
 
+python manage.py register
+
 exec "$@"
