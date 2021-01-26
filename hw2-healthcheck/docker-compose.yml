@@ -1,15 +1,23 @@
 version: '3.7'
 
 services:
-  backend:
+  backend1:
     build: ./backend
-    command: python manage.py run -h 0.0.0.0
-    volumes:
-      - ./backend:/usr/src/app/
-    ports:
-      - 5000:5000
+    command: gunicorn --bind 0.0.0.0:5000 manage:app
+    expose:
+      - 5000
     env_file:
-      - ./.env.dev
+      - ./.env.backend
+    depends_on:
+      - postgresql
+
+  backend2:
+    build: ./backend
+    command: gunicorn --bind 0.0.0.0:5000 manage:app
+    expose:
+      - 5000
+    env_file:
+      - ./.env.backend
     depends_on:
       - postgresql
 
@@ -19,6 +27,14 @@ services:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - ./.env.db
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 1337:80
+    depends_on:
+      - backend1
+      - backend2
 
 volumes:
   postgres_data:
