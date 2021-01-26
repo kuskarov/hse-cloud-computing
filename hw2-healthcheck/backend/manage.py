@@ -14,14 +14,10 @@ def create_db():
 
 @cli.command("register")
 def register():
-    print("accessing db...")
     ip = get_ip()
     if ServiceStatus.query.get(ip) is None:
         db.session.add(ServiceStatus(ip=ip, status=ServiceStatusEnum.AVAILABLE))
         db.session.commit()
-        print("Committed!")
-    else:
-        print("Already exists.")
 
 
 if __name__ == "__main__":

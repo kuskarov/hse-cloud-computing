@@ -10,11 +10,9 @@ if [ "$DATABASE" = "postgres" ]; then
   echo "PostgreSQL started"
 fi
 
-if [ "$FLASK_ENV" = "development" ]; then
-  echo "Creating the database tables..."
-  python manage.py create_db
-  echo "Tables created"
-fi
+echo "Creating the database tables..."
+python manage.py create_db
+echo "Tables created"
 
 echo "Registering this backend in database..."
 python manage.py register
