@@ -1,7 +1,8 @@
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 import socket
-import enum
+from datetime import datetime
+from sqlalchemy.exc import OperationalError
 
 app = Flask(__name__)
 app.config.from_object("project.config.Config")
@@ -13,34 +14,30 @@ def get_ip():
     return socket.gethostbyname(socket.gethostname())
 
 
-class ServiceStatusEnum(enum.Enum):
-    AVAILABLE = 1
-    NOT_AVAILABLE = 2
-
-
 class ServiceStatus(db.Model):
     __tablename__ = "service_status"
 
     ip = db.Column(db.String(), primary_key=True)
-    status = db.Column(db.Enum(ServiceStatusEnum))
+    last_seen_ts = db.Column(db.DateTime())
 
-    def __init__(self, ip, status):
-        self.ip = ip
-        self.status = status
+    def __init__(self):
+        self.ip = get_ip()
+        self.last_seen_ts = datetime.utcnow()
 
 
 @app.route('/healthcheck')
 def healthcheck():
     try:
         statuses = ServiceStatus.query.all()
+        now = datetime.utcnow()
         results = [
             {
                 "ip": s.ip,
-                "status": "AVAILABLE"
+                "status": "AVAILABLE" if (now - s.last_seen_ts).total_seconds() < 5 else "UNAVAILABLE"
             } for s in statuses]
 
         return {"ip": get_ip(), "services": results}
-    except:
+    except OperationalError:
         return {"error": "Database is unavailable"}
 
 
