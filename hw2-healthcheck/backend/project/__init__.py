@@ -1,15 +1,16 @@
 from flask import Flask
-from flask_migrate import Migrate
+# from flask_migrate import Migrate
 from flask_sqlalchemy import SQLAlchemy
 import socket
 import enum
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SQLALCHEMY_DATABASE_URI'] = "postgresql://postgres:postgres@localhost:5432/test_flask"
-app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
+app.config.from_object("project.config.Config")
+
 db = SQLAlchemy(app)
-migrate = Migrate(app, db)
+
+# migrate = Migrate(app, db)
+
 local_ip = socket.gethostbyname(socket.gethostname())
 
 
@@ -38,7 +39,7 @@ def register(ip):
         print("Already exists.")
 
 
-register(local_ip)
+#register(local_ip)
 
 
 @app.route('/healthcheck')

@@ -1,0 +1,32 @@
+version: '3.7'
+
+services:
+  backend:
+    build: ./backend
+    command: python manage.py run -h 0.0.0.0
+    volumes:
+      - ./backend:/usr/src/app/
+    ports:
+      - 5000:5000
+    environment:
+      - FLASK_APP=project/__init__.py
+      - FLASK_ENV=development
+      - SQL_HOST=postgresql
+      - SQL_PORT=5432
+      - DATABASE=postgres
+      - DATABASE_URL=postgresql://healthcheck:healthcheck@postgresql:5432/healthcheck_db
+
+    depends_on:
+      - postgresql
+
+  postgresql:
+    image: postgres:12-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    environment:
+      - POSTGRES_USER=healthcheck
+      - POSTGRES_PASSWORD=healthcheck
+      - POSTGRES_DB=healthcheck_db
+
+volumes:
+  postgres_data:
