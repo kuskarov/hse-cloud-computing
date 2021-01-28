@@ -8,6 +8,8 @@ services:
       - 80
     env_file:
       - ./.env.backend
+    environment:
+      - IP=10.10.10.41
     depends_on:
       - postgresql
 
@@ -18,11 +20,13 @@ services:
       - 80
     env_file:
       - ./.env.backend
+    environment:
+      - IP=10.10.10.42
     depends_on:
       - postgresql
 
   postgresql:
-    image: postgres:12-alpine
+    build: ./postgres
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:

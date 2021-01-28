@@ -1,5 +1,5 @@
 from project import app, db
-from project.util import get_ip, utcnow
+from project.util import utcnow
 from project.models import ServiceStatus
 from project.config import Config
 
@@ -17,6 +17,7 @@ def healthcheck():
                         "ip": s.ip,
                         "status": "AVAILABLE"
                     })
-        return {"ip": get_ip(), "services": results}
+        return {"ip": Config.IP, "services": results}
     except:
+        db.session.rollback()
         return {"error": "Database is unavailable"}

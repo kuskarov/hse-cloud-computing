@@ -1,19 +1,19 @@
 from threading import Timer
 from project.models import ServiceStatus
-from project.util import get_ip, utcnow
+from project.util import utcnow
 from project.config import Config
 
 
 def update_db(db):
     try:
-        ip = get_ip()
-        entry = ServiceStatus.query.get(ip)
+        entry = ServiceStatus.query.get(Config.IP)
         if entry is None:
-            db.session.add(ServiceStatus(ip, utcnow()))
+            db.session.add(ServiceStatus(Config.IP, utcnow()))
         else:
             entry.last_seen_ts = utcnow()
         db.session.commit()
     except Exception as e:
+        db.session.rollback()
         print(f"There was an Error: {e}")
 
 
