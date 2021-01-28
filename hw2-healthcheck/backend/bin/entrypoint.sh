@@ -6,7 +6,7 @@ while ! nc -z "$SQL_HOST" "$SQL_PORT"; do
 done
 echo "PostgreSQL started"
 
-if [ "$CREATE_TABLE" = "True" ]; then
+if [ "$CREATE_TABLE" = true ]; then
   echo "Creating the database tables..."
   python manage.py create_db
   echo "Tables created"
@@ -18,9 +18,9 @@ echo "Registering this backend in database..."
 python manage.py register
 echo "Registered"
 
-if [ "$COMPOSE" != "True" ]; then
+if [ "$COMPOSE" != true ]; then
   echo "Running without docker-compose..."
-  gunicorn --bind 0.0.0.0:5000 manage:app
+  gunicorn --bind 0.0.0.0:80 manage:app
 else
   exec "$@"
 fi

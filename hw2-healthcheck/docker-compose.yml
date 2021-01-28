@@ -3,9 +3,9 @@ version: '3.7'
 services:
   backend1:
     build: ./backend
-    command: gunicorn --bind 0.0.0.0:5000 manage:app
+    command: gunicorn --bind 0.0.0.0:80 manage:app
     expose:
-      - 5000
+      - 80
     env_file:
       - ./.env.backend
     depends_on:
@@ -13,9 +13,9 @@ services:
 
   backend2:
     build: ./backend
-    command: gunicorn --bind 0.0.0.0:5000 manage:app
+    command: gunicorn --bind 0.0.0.0:80 manage:app
     expose:
-      - 5000
+      - 80
     env_file:
       - ./.env.backend
     depends_on:
@@ -31,7 +31,7 @@ services:
   nginx:
     build: ./nginx
     ports:
-      - 1337:80
+      - 80:80
     depends_on:
       - backend1
       - backend2
