@@ -2,7 +2,6 @@ from project import app, db
 from project.util import get_ip, utcnow
 from project.models import ServiceStatus
 from project.config import Config
-from sqlalchemy.exc import OperationalError
 
 
 @app.route('/healthcheck')
@@ -19,5 +18,5 @@ def healthcheck():
                         "status": "AVAILABLE"
                     })
         return {"ip": get_ip(), "services": results}
-    except OperationalError:
+    except:
         return {"error": "Database is unavailable"}
