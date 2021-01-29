@@ -1,6 +1,6 @@
 spec:
   containers:
-    - image: cr.yandex/crpvc97ukv1eajlbgk9p/pg:1
+    - image: cr.yandex/$REGISTRY_ID/pg:1
       securityContext:
         privileged: false
       stdin: false

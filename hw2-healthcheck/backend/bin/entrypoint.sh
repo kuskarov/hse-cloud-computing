@@ -1,6 +1,6 @@
 #!/bin/sh
 
-IP=$(ip addr | grep -m 1 global | cut -d ' ' -f 6 | cut -d '/' -f 1)
+export IP=$(ip addr | grep -m 1 global | cut -d ' ' -f 6 | cut -d '/' -f 1)
 
 echo "My IP is $IP"
 

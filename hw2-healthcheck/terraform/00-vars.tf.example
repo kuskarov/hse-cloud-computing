@@ -3,15 +3,15 @@ variable "zone" {
 }
 
 variable "yandex-token" {
-  default = ""
+  default = "$YANDEX_OAUTH"
 }
 
 variable "yandex-cloud-id" {
-  default = ""
+  default = "$CLOUD_ID"
 }
 
 variable "yandex-folder-id" {
-  default = ""
+  default = "$FOLDER_ID"
 }
 
 variable "instance_root_disk" {
@@ -19,5 +19,5 @@ variable "instance_root_disk" {
 }
 
 variable "puller_service_account_id" {
-  default = ""
+  default = "$SERVICE_ACCOUNT_ID"
 }

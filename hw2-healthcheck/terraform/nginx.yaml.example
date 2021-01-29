@@ -1,7 +1,8 @@
 spec:
   containers:
-    - image: cr.yandex/crpvc97ukv1eajlbgk9p/nginx:1
+    - image: cr.yandex/$REGISTRY_ID/nginx:1
       securityContext:
         privileged: false
       stdin: false
       tty: true
+
