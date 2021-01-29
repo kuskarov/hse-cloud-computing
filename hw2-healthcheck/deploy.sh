@@ -33,7 +33,7 @@ echo "Deploying to cloud..."
 
 cd terraform/
 
-envsubst <00-vars.tf.example >00-vars.tf
+envsubst <vars.tf.example >vars.tf
 envsubst <nginx.yaml.example >nginx.yaml
 envsubst <backend.yaml.example >backend.yaml
 envsubst <postgresql.yaml.example >postgresql.yaml
