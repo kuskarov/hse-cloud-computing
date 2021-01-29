@@ -1,0 +1,5 @@
+ssh_pwauth: no
+users:
+  - name: tfk
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    shell: /bin/bash

@@ -1,0 +1,38 @@
+version: '3.7'
+
+services:
+  backend1:
+    build: ./backend
+    expose:
+      - 80
+    env_file:
+      - ./.env.backend
+    depends_on:
+      - postgresql
+
+  backend2:
+    build: ./backend
+    expose:
+      - 80
+    env_file:
+      - ./.env.backend
+    depends_on:
+      - postgresql
+
+  postgresql:
+    build: ./postgres
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    env_file:
+      - ./.env.db
+
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:80
+    depends_on:
+      - backend1
+      - backend2
+
+volumes:
+  postgres_data:

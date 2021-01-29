@@ -1,0 +1,16 @@
+spec:
+  containers:
+    - image: cr.yandex/$REGISTRY_ID/backend:1
+      securityContext:
+        privileged: false
+      stdin: false
+      tty: true
+      env:
+        - name: DATABASE_URL
+          value: "postgresql://healthcheck:healthcheck@postgresql:5432/healthcheck_db"
+        - name: SQL_HOST
+          value: "postgresql"
+        - name: SQL_PORT
+          value: 5432
+        - name: CREATE_TABLE
+          value: true

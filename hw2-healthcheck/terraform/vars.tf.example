@@ -1,0 +1,23 @@
+variable "zone" {
+  default = "ru-central1-a"
+}
+
+variable "yandex-token" {
+  default = "$YANDEX_OAUTH"
+}
+
+variable "yandex-cloud-id" {
+  default = "$CLOUD_ID"
+}
+
+variable "yandex-folder-id" {
+  default = "$FOLDER_ID"
+}
+
+variable "instance_root_disk" {
+  default = "13"
+}
+
+variable "puller_service_account_id" {
+  default = "$SERVICE_ACCOUNT_ID"
+}

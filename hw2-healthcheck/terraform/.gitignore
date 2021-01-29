@@ -1,0 +1,7 @@
+vars.tf
+.terraform.lock.hcl
+/.terraform/
+terraform.tfstate*
+nginx.yaml
+postgresql.yaml
+backend.yaml
