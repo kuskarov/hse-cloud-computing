@@ -1,0 +1,14 @@
+spec:
+  containers:
+    - image: cr.yandex/crpvc97ukv1eajlbgk9p/pg:1
+      securityContext:
+        privileged: false
+      stdin: false
+      tty: true
+      env:
+        - name: POSTGRES_USER
+          value: "healthcheck"
+        - name: POSTGRES_PASSWORD
+          value: "healthcheck"
+        - name: POSTGRES_DB
+          value: "healthcheck_db"
