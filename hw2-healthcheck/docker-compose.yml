@@ -3,25 +3,19 @@ version: '3.7'
 services:
   backend1:
     build: ./backend
-    command: gunicorn --bind 0.0.0.0:80 manage:app
     expose:
       - 80
     env_file:
       - ./.env.backend
-    environment:
-      - IP=10.10.10.41
     depends_on:
       - postgresql
 
   backend2:
     build: ./backend
-    command: gunicorn --bind 0.0.0.0:80 manage:app
     expose:
       - 80
     env_file:
       - ./.env.backend
-    environment:
-      - IP=10.10.10.42
     depends_on:
       - postgresql
 

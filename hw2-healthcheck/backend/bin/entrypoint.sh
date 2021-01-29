@@ -22,9 +22,4 @@ echo "Registering this backend in database..."
 python manage.py register
 echo "Registered"
 
-if [ "$COMPOSE" != true ]; then
-  echo "Running without docker-compose..."
-  gunicorn --bind 0.0.0.0:80 manage:app
-else
-  exec "$@"
-fi
+gunicorn --bind 0.0.0.0:80 manage:app

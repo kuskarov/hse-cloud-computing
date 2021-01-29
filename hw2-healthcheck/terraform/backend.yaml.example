@@ -14,5 +14,3 @@ spec:
           value: 5432
         - name: CREATE_TABLE
           value: true
-        - name: COMPOSE
-          value: false
