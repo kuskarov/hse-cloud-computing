@@ -1,5 +1,9 @@
 #!/bin/sh
 
+IP=$(ip addr | grep -m 1 global | cut -d ' ' -f 6 | cut -d '/' -f 1)
+
+echo "My IP is $IP"
+
 echo "Waiting for postgres..."
 while ! nc -z "$SQL_HOST" "$SQL_PORT"; do
   sleep 0.1

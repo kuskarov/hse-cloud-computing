@@ -9,7 +9,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # install system dependencies
-RUN apt-get update && apt-get install -y netcat
+RUN apt-get update && apt-get install -y netcat iproute2
 
 # install dependencies
 RUN pip install --upgrade pip
@@ -18,6 +18,8 @@ RUN pip install -r requirements.txt
 
 # copy project
 COPY . /usr/src/app/
+
+ENV FLASK_APP=project/__init__.py
 
 # run entrypoint.sh
 ENTRYPOINT ["/usr/src/app/bin/entrypoint.sh"]
