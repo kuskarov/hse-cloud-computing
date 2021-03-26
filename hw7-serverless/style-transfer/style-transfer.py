@@ -72,8 +72,8 @@ def handler(event, context):
         aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY')
     )
 
-    bucket_name = event['messages'][0]['details']['bucket_id']
-    object_name = event['messages'][0]['details']['object_id']
+    bucket_name = os.getenv('UPLOAD_BUCKET_NAME')
+    object_name = event['messages'][0]['details']['message']['body']
 
     # download from s3
     s3.download_file(bucket_name, object_name, '/tmp/input.jpg')
@@ -84,3 +84,5 @@ def handler(event, context):
 
     # upload to s3
     s3.upload_file('/tmp/output.jpg', results_bucket_name, object_name)
+
+    
