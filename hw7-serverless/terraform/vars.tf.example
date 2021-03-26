@@ -13,15 +13,3 @@ variable "yandex-cloud-id" {
 variable "yandex-folder-id" {
   default = "$FOLDER_ID"
 }
-
-variable "instance_root_disk" {
-  default = "13"
-}
-
-variable "puller_service_account_id" {
-  default = "$SERVICE_ACCOUNT_ID"
-}
-
-variable "fedora_coreos_image_id" {
-  default = "fd88jehnjitgokepq2iq"
-}
