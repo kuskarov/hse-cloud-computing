@@ -1,0 +1,32 @@
+openapi: 3.0.0
+info:
+  title: prisma-like
+  version: 1.0.0
+paths:
+  /create:
+    post:
+      x-yc-apigateway-integration:
+        type: cloud-functions
+        function_id: ${CREATE_FUNCTION_ID}
+        service_account_id: ${SERVICE_ACCOUNT_ID}
+      operationId: create_task
+  /list:
+    get:
+      x-yc-apigateway-integration:
+        type: cloud-functions
+        function_id: ${LIST_FUNCTION_ID}
+        service_account_id: ${SERVICE_ACCOUNT_ID}
+      operationId: list_tasks
+  /get:
+    get:
+      x-yc-apigateway-integration:
+        type: cloud-functions
+        function_id: ${GET_FUNCTION_ID}
+        service_account_id: ${SERVICE_ACCOUNT_ID}
+      operationId: get_task
+      parameters:
+        - name: task_id
+          in: query
+          required: true
+          schema:
+            type: string
