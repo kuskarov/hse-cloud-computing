@@ -1,6 +1,7 @@
-import argparse
 import time
 import json
+import boto3
+import os
 
 import cv2 as cv
 
@@ -54,62 +55,32 @@ def resize_img(img, width=None, height=None, inter=cv.INTER_AREA):
 
 def process_image(image, model, output):
     net = cv.dnn.readNetFromTorch(model)
-
-    # download from S3
-
     img = cv.imread(image)
     img = resize_img(img, width=600)
     h, w = img.shape[:2]
     out = predict(net, img, h, w)
     out = cv.convertScaleAbs(out, alpha=255.0)
-    cv.imwrite("result.jpg", out)
-
-    # upload to S3
-
-'''
-{
-  "messages": [
-    {
-      "event_metadata": {
-        "event_id": "bb1dd06d-a82c-49b4-af98-d8e0c5a1d8f0",
-        "event_type": "yandex.cloud.events.storage.ObjectDelete",
-        "created_at": "2019-12-19T14:17:47.847365Z",
-        "tracing_context": {
-          "trace_id": "dd52ace79c62892f",
-          "span_id": "",
-          "parent_span_id": ""
-        },
-        "cloud_id": "b1gvlrnlei4l5idm9cbj",
-        "folder_id": "b1g88tflru0ek1omtsu0"
-      },
-      "details": {
-        "bucket_id": "s3-for-trigger",
-        "object_id": "dev/0_15a775_972dbde4_orig12.jpg"
-      }
-    }
-  ]
-}
-'''
-
-def handler(event, context):
-    return {
-        'statusCode': 200,
-        'body': json.dumps({
-            'event': event,
-        }),
-    }
+    cv.imwrite(output, out)
 
 
-'''
-def handler(event, context):
-    # parser = argparse.ArgumentParser()
-    # parser.add_argument('-i', '--image', type=str, help='path to the input image')
-    # parser.add_argument('-m', '--model', type=str, help='path to the model file')
-    # parser.add_argument('-o', '--output', type=str, help='path to the output image')
-    # args = parser.parse_args()
+def handler(event, context):  
+    session = boto3.session.Session()
+    s3 = session.client(
+        service_name='s3',
+        endpoint_url='https://storage.yandexcloud.net',
+        aws_access_key_id=os.getenv('AWS_ACCESS_KEY_ID'),
+        aws_secret_access_key=os.getenv('AWS_SECRET_ACCESS_KEY')
+    )
 
-    process_image(args.image, args.model, args.output)
-'''
+    bucket_name = event['messages'][0]['details']['bucket_id']
+    object_name = event['messages'][0]['details']['object_id']
 
-if __name__ == "__main__":
-    main()
+    # download from s3
+    s3.download_file(bucket_name, object_name, '/tmp/input.jpg')
+
+    process_image('/tmp/input.jpg', 'feathers.t7', '/tmp/output.jpg')
+
+    results_bucket_name = os.getenv('RESULTS_BUCKET_NAME')
+
+    # upload to s3
+    s3.upload_file('/tmp/output.jpg', results_bucket_name, object_name)
