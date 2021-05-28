@@ -1,3 +1,2 @@
-# Некоторые домашние задания по курсу "Облачные вычисления" в ВШЭ
-
 - [HW2: Healthcheck](https://github.com/kuskarov/hse-cloud-computing/tree/master/hw2-healthcheck)
+- [HW7: Serverless](https://github.com/kuskarov/hse-cloud-computing/tree/master/hw7-serverless)
